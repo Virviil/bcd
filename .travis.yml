@@ -3,8 +3,8 @@ language: go
 go:
   - tip
   
-before-install:
+before_script:
   - go get -v github.com/mattn/goveralls
   
-script:
+after_script:
   - $HOME/gopath/bin/goveralls -service=travis-ci
