@@ -1,6 +1,9 @@
 package bcd
 
-import "encoding/hex"
+import (
+	"encoding/hex"
+	"fmt"
+)
 
 //lbcd adds necessary "0" at the left side of byte array, if number of bytes is odd
 func ASCII2Lbcd(data []byte) []byte {
@@ -48,4 +51,12 @@ func bcd2Ascii(data []byte) []byte {
 	out := make([]byte, len(data)*2)
 	n := hex.Encode(out, data)
 	return out[:n]
+}
+
+func Dec2Rbcd(dec int) []byte {
+	return ASCII2Rbcd([]byte(fmt.Sprint(dec)))
+}
+
+func Dec2Lbcd(dec int) []byte {
+	return ASCII2Lbcd([]byte(fmt.Sprint(dec)))
 }

@@ -83,10 +83,10 @@ func TestBcd(t *testing.T) {
 				{"\x09\x04", "904"},
 				{"\x12\x34", "1234"},
 				{"\xAC", "ac"},
-                {"\xac", "ac"},
+				{"\xac", "ac"},
 				{"\xAC\xD0", "acd0"},
 				{"\xac\xd0", "acd0"},
-                {"\x0c\xd0", "cd0"},
+				{"\x0c\xd0", "cd0"},
 				{"\xab\xcd\xef", "abcdef"},
 			}
 			for _, tc := range x {
@@ -103,14 +103,50 @@ func TestBcd(t *testing.T) {
 				{"\x09\x04", "0904"},
 				{"\x12\x34", "1234"},
 				{"\xAC", "ac"},
-                {"\xac", "ac"},
+				{"\xac", "ac"},
 				{"\xAC\xD0", "acd"},
 				{"\xac\xd0", "acd"},
-                {"\x0c\xd0", "0cd"},
+				{"\x0c\xd0", "0cd"},
 				{"\xab\xcd\xef", "abcdef"},
 			}
 			for _, tc := range x {
 				So(Lbcd2ASCII([]byte(tc.value)), ShouldResemble, []byte(tc.expected))
+			}
+		})
+	})
+	Convey("Describe Dec->BCD converter", t, func() {
+		Convey("It should convert integer in decimal base right with Rbcd", func() {
+			var x = []struct {
+				value    int
+				expected string
+			}{
+				{0, "\x00"},
+				{90, "\x90"},
+				{1234, "\x12\x34"},
+				{56789, "\x05\x67\x89"},
+                {567, "\x05\x67"},
+				{01234, "\x06\x68"},
+				{0x20, "\x32"},
+			}
+			for _, tc := range x {
+				So(Dec2Rbcd(tc.value), ShouldResemble, []byte(tc.expected))
+			}
+		})
+		Convey("It should convert integer in decimal base right with Lbcd", func() {
+			var x = []struct {
+				value    int
+				expected string
+			}{
+				{0, "\x00"},
+				{90, "\x90"},
+				{1234, "\x12\x34"},
+				{56789, "\x56\x78\x90"},
+                {567, "\x56\x70"},
+				{01234, "\x66\x80"},
+				{0x20, "\x32"},
+			}
+			for _, tc := range x {
+				So(Dec2Lbcd(tc.value), ShouldResemble, []byte(tc.expected))
 			}
 		})
 	})
